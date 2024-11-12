@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceEmpleados } from '../../services/service.empleados.axios';
+import { ServiceEmpleados } from '../../services/service.empleados';
 import { Empleado } from '../../models/empleado';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
-  styleUrls: ['./perfil.component.css'] // Se corrigió styleUrl -> styleUrls
+  styleUrl: './perfil.component.css'
 })
 export class PerfilComponent implements OnInit {
   public empleado!: Empleado;
@@ -14,22 +14,15 @@ export class PerfilComponent implements OnInit {
   constructor(
     private _service: ServiceEmpleados,
     private _router: Router
-  ) { }
+  ){}
 
-  async ngOnInit(): Promise<void> {
-    if (this._service.token === "") {
+  ngOnInit(): void {
+    if (this._service.token == ""){
       this._router.navigate(["/login"]);
-      return;
     }
-
-    try {
-      // LLAMAMOS AL SERVICIO Y ESPERAMOS LA RESPUESTA
-      const response = await this._service.getPerfilEmpleado();
-      console.log("Empleado:", response);
-      this.empleado = response; // Asignamos la respuesta al modelo empleado
-    } catch (error) {
-      console.error("Error al obtener el perfil del empleado:", error);
-      alert("No se pudo cargar el perfil del empleado.");
-    }
+    this._service.getPerfilEmpleado().subscribe(response => {
+      console.log(response);
+      this.empleado = response;
+    })  
   }
 }

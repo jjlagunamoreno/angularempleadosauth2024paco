@@ -1,55 +1,35 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ServiceEmpleados } from '../../services/service.empleados.axios';
+import { ServiceEmpleados } from '../../services/service.empleados';
 import { Router } from '@angular/router';
 import { Login } from '../../models/login';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'] // Se corrigió styleUrl -> styleUrls
+  styleUrl: './login.component.css'
 })
 export class LoginComponent implements OnInit {
-  @ViewChild("cajaUsuario") cajaUsuario!: ElementRef;
-  @ViewChild("cajaPassword") cajaPassword!: ElementRef;
+  @ViewChild("cajausuario") cajaUsuario!: ElementRef;
+  @ViewChild("cajapassword") cajaPassword!: ElementRef;
 
   public respuesta!: string;
-
   constructor(
     private _service: ServiceEmpleados,
     private _router: Router
-  ) { }
+  ){}
 
-  async loginUsuario(): Promise<void> {
-    const userName = this.cajaUsuario.nativeElement.value.trim();
-    const password = this.cajaPassword.nativeElement.value.trim();
-
-    if (!userName || !password) {
-      alert("Por favor, completa todos los campos.");
-      return;
-    }
-
-    const user = new Login(userName, password);
-
-    try {
-      // LLAMAMOS AL SERVICIO Y ESPERAMOS LA RESPUESTA
-      const response = await this._service.loginEmpleado(user);
-
-      console.log("Respuesta del servidor:", response);
-
-      // GUARDAMOS EL TOKEN EN EL SERVICIO Y LOCALSTORAGE
-      this._service.token = response.response; // Asignamos el token al servicio
-      localStorage.setItem('authToken', response.response); // Guardamos el token en localStorage
+  loginUsuario(): void {
+    let userName = this.cajaUsuario.nativeElement.value;
+    let password = this.cajaPassword.nativeElement.value;
+    let user = new Login(userName, password);
+    this._service.loginEmpleado(user).subscribe(response => {
+      console.log("listo");
+      this._service.token = response.response;
       this.respuesta = response.response;
-
-      alert("Inicio de sesión exitoso");
-
-      // REDIRIGIMOS AL COMPONENTE PERFIL
-      this._router.navigate(['/perfil']);
-    } catch (error) {
-      console.error("Error durante el inicio de sesión:", error);
-      alert("Usuario o contraseña incorrectos");
-    }
+    })
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    
+  }
 }

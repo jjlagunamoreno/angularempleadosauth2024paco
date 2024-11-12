@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ServiceEmpleados } from '../../services/service.empleados.axios';
+import { ServiceEmpleados } from '../../services/service.empleados';
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
@@ -7,6 +7,6 @@ import { ServiceEmpleados } from '../../services/service.empleados.axios';
 })
 export class MenuComponent {
   constructor(
-    private _service: ServiceEmpleados) {
-  }
+    private _service: ServiceEmpleados){
+    }
 }
