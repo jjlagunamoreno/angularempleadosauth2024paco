@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { LoginComponent } from './components/login/login.component';
-import { ServiceEmpleados } from './services/service.empleados';
+import { ServiceEmpleados } from './services/service.empleados.axios';
 import { PerfilComponent } from './components/perfil/perfil.component';
 import { SubordinadosComponent } from './components/subordinados/subordinados.component';
 import { HomeComponent } from './components/home/home.component';

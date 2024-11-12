@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Empleado } from '../../models/empleado';
-import { ServiceEmpleados } from '../../services/service.empleados';
+import { ServiceEmpleados } from '../../services/service.empleados.axios';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-subordinados',
   templateUrl: './subordinados.component.html',
-  styleUrl: './subordinados.component.css'
+  styleUrls: ['./subordinados.component.css']
 })
 export class SubordinadosComponent implements OnInit {
   public empleados!: Array<Empleado>;
@@ -14,15 +14,21 @@ export class SubordinadosComponent implements OnInit {
   constructor(
     private _service: ServiceEmpleados,
     private _router: Router
-  ){}
+  ) { }
 
-  ngOnInit(): void {
-    if (this._service.token == ""){
-      this._router.navigate(["/login"]);
+  async ngOnInit(): Promise<void> {
+    if (this._service.token === "") {
+      this._router.navigate(['/login']);
+      return;
     }
-    this._service.getSubordinados().subscribe(response => {
-      console.log(response);
+
+    try {
+      const response = await this._service.getSubordinados();
+      console.log('Lista de subordinados:', response);
       this.empleados = response;
-    })  
+    } catch (error) {
+      console.error('Error obteniendo subordinados:', error);
+      alert('No se pudo obtener la lista de subordinados.');
+    }
   }
 }
