@@ -1,0 +1,20 @@
+<div>
+    <h1>Perfil del empleado</h1>
+    @if (empleado){
+        <ul class="list-group">
+            <li class="list-group-item">
+                Apellido {{empleado.apellido}}
+            </li>
+            <li class="list-group-item">
+                Oficio: {{empleado.oficio}}
+            </li>
+            <li class="list-group-item">
+                Salario: {{empleado.salario}}
+            </li>
+            <li class="list-group-item">
+                Director: {{empleado.director}}
+            </li>            
+        </ul>
+    }
+
+</div>
